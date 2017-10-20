@@ -1,0 +1,7 @@
+<h2>Users</h2>
+
+<ul>
+<a *ngFor='let user of users' [routerLink]="['/userpage',user.id]" >
+    {{ user.name }} <br>
+</a>
+</ul>

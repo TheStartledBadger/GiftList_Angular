@@ -1,0 +1,25 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "outDir": "./dist/out-tsc",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "target": "es6",
+    "module": "commonjs",
+    "noImplicitAny": true,
+    "typeRoots": [
+      "../../node_modules/@types"
+    ],
+    "lib": [
+      "es6",
+      "dom"
+    ]
+  },
+  "include": [
+    "src/server/**/*.ts",
+    "src/common/**/*.ts"
+  ]
+}

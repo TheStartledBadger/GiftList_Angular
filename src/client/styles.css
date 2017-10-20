@@ -1,0 +1,35 @@
+/* You can add global styles to this file, and also import other style files */
+
+/* Main settings for all pages*/
+/* Centered on the page */
+.giftlistpage {
+    position: absolute;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, 0%)
+}
+
+.giftlistbutton {
+    font-family: Arial;
+    background-color: #eee;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    cursor: hand;
+}
+
+
+/* The list of gifts */
+.giftlist {
+    background-color: aliceblue;
+}
+
+.giftlist tr:nth-child(even) { background: rgb(174, 225, 255)} 
+.giftlist tr:nth-child(odd)  { background: rgb(215, 194, 253)} 
+
+
+.giftlist th {
+    background-color: lightgray;
+    border: 1px solid black;
+}

@@ -1,0 +1,27 @@
+<div class="giftlistpage">
+<p>
+  <span *ngIf='user'>Gift list for {{ user.name }}</span>  
+</p>
+
+<table class="giftlist">
+  <tr><th>Description</th><th>Cost</th><th>Where Seen</th><th>Bought By</th></tr>
+  <tr>
+      <td><input #title /></td>
+      <td><input #cost /></td>
+      <td><input #where /></td>
+      <td></td>
+      <td><div class="giftlistbutton" (click)="add(title.value, cost.value, where.value);title.value='';cost.value='';where.value=''">Add</div></td>
+  </tr>
+
+  <tr *ngFor='let gift of gifts'>
+    <td>{{ gift.title }}</td>
+    <td>{{ gift.cost }}</td>
+    <td>{{ gift.where }}</td>
+    <td>{{ gift.boughtby }}</td>
+    <td>
+      <div class="giftlistbutton" (click)="remove(gift)">Remove</div>
+    </td>
+  </tr>
+  
+</table>
+</div>

@@ -1,0 +1,11 @@
+<div>
+  <label>Username</label>
+  <input #username />
+  <button (click)="add(username.value);username.value=''">Add</button>
+</div>
+
+<ul>
+  <li *ngFor="let user of users" >
+    {{ user.name }}  <button class="giftlistbutton" (click)="delete(user.id)">DELETE</button>
+  </li>
+</ul>
