@@ -1,40 +1,37 @@
 import * as express from 'express';
 import * as expressSession from 'express-session';
 import * as passport from 'passport';
-//import * as passportSession from 'passport-session';
 import * as passportLocal  from 'passport-local';
+import { Data } from './data';
+
+
 
 export class PassportSetup {
-
+    data: Data;
+    
     public constructor(){};
 
-    public setupPassport(app: express.Application): express.RequestHandler {
-        // We give the strategy a name 'local'
-        var localStrategy = new passportLocal.Strategy(
-            function(username: any, password: any, done: any) {
-                console.log("user verification called");
-                if(username ==="d") {
-                    console.log("User login approved");
-                    done(null, { name: "bob"});
-                } else {
-                    console.log("User login denied");
-                    done (null, false);
-                }
-            }
-            );
-        passport.use('local', localStrategy);
+    public setupPassport(app: express.Application, dataIn: Data): express.RequestHandler {
+        var self = this;
+        const data = this.data = dataIn;
+        console.log("DataIn is ", dataIn);
+        console.log("Data is ", data);
+        console.log("This.data is ", this.data);
+        passport.use(new passportLocal.Strategy(function(username, password, done) {
+            var result = data.checkLogon(username, password);
+            if(result){
+              self.data.findUserByName(username)
+                .then(user => done(null, user));
+            } else done(null, false);
+        }));
 
         passport.serializeUser(function(user: any, done: any) {
-            console.log("Serialise user");
-            done(null, user);
+            done(null, user.id);
         });
         
         passport.deserializeUser(function(id: any, done: any) {
-        //    User.findById(id, function(err, user) {
-        //      done(err, user);
-        //    });
-        console.log("Deserialise user");
-            done(null, {});
+            self.data.findUserById(id)
+                .then(user => done(null, user));
         });
 
         // Authentication framework
@@ -60,9 +57,28 @@ export class PassportSetup {
             }
         );
 
+        app.post('/register',
+            (req: express.Request, res:express.Response, next: express.NextFunction)  => {
+               console.log("Register post called ", req.body);
+               this.data.createUser(req.body.username, req.body.password)
+                    .then(() => next());
+            }
+        );
+
+        app.all('/logout', (req: express.Request, res:express.Response, next: express.NextFunction) => {
+            console.log("Logout called");
+            req.logOut();
+            res.redirect('/');
+        });
+        
         app.get('/login',
         function(req: Request, res: any){
             res.sendFile(__dirname+'/login/login.html');
+        });
+
+        app.get('/register',
+        function(req: Request, res: any){
+            res.sendFile(__dirname+'/login/register.html');
         });
 
 

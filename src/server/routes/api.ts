@@ -1,6 +1,5 @@
 import { Data } from '../data';
 import { Router, Request, Response } from 'express';
-//const express = require('express');
 const router = Router();
 const data = new Data();
 
@@ -16,7 +15,8 @@ router.get('/users', (req: Request, res: Response) => {
 router.post('/users', (req: Request, res: Response) => {
     console.log("POST /users");
     var newUsername = req.body.newUsername;
-    data.createUser(newUsername)
+    var password = req.body.password;
+    data.createUser(newUsername, password)
         .then(() => data.getUsers())
         .then(result => res.json(result));
 })
@@ -61,4 +61,8 @@ router.delete('/gifts/:id', (req: Request, res: Response) => {
 
 
 
-module.exports = router; 
+module.exports = function(){
+    return {
+        router: router,
+        data: data};
+    }; 

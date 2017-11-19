@@ -27,7 +27,7 @@ gulp.task('serve', function(){
   nodemon({
     ext: 'ts js',
     env: { 'NODE_ENV': 'development' },
-    exec: ' ts-node --project src/server src/server/server.ts '
+    exec: ' ts-node --inspect=5858 --project src/server src/server/server.ts '
   })
   .on('restart', function(){
     console.log('restarted');

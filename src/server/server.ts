@@ -6,7 +6,9 @@ const proxy = require('express-http-proxy');
 import { PassportSetup } from './setupPassport';
 
 // Get our API routes
-const api = require('./routes/api'); 
+const apiInfo = require('./routes/api'); 
+const api = apiInfo().router;
+const data = apiInfo().data;
 
 // Create our server process
 const app = express();
@@ -16,7 +18,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 var ppSetup = new PassportSetup();
-var isLoggedIn = ppSetup.setupPassport(app);
+var isLoggedIn = ppSetup.setupPassport(app, data);
 
 
 // Set our api routes

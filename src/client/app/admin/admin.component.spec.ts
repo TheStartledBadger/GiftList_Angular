@@ -1,4 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { DataService } from '../data/data.service';
 
 import { AdminComponent } from './admin.component';
 
@@ -7,8 +8,11 @@ describe('AdminComponent', () => {
   let fixture: ComponentFixture<AdminComponent>;
 
   beforeEach(async(() => {
+    let dataServiceStub = {};
+
     TestBed.configureTestingModule({
-      declarations: [ AdminComponent ]
+      declarations: [ AdminComponent ],
+      providers:    [ {provide: DataService, useValue: dataServiceStub } ]
     })
     .compileComponents();
   }));
@@ -23,3 +27,4 @@ describe('AdminComponent', () => {
     expect(component).toBeTruthy();
   });
 });
+
