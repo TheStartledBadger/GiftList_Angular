@@ -118,12 +118,12 @@ export class Data {
     };
         
     public createGift(title: string, cost: string, where: string, userFor: number): Promise<void> {
-        console.log("Add gift", title, userFor);
+        console.log("Add gift", title, userFor, cost, where);
         return new Promise<void>(
             (resolve, reject) => {
-                this.addGiftStmt.run(title, userFor, cost, where, undefined, 
+                this.addGiftStmt.run(title, cost, where, userFor, undefined, 
                     (err: any) => err && console.log("Add gift error: " , err),  // error
-                    () => resolve());  // success
+                    () => {console.log("Added gift"); resolve();});  // success
             });
     };
 

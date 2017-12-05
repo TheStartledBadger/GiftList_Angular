@@ -3,7 +3,7 @@ import * as expressSession from 'express-session';
 import * as passport from 'passport';
 import * as passportLocal  from 'passport-local';
 import { Data } from './data';
-
+const flash=require("connect-flash");
 
 
 export class PassportSetup {
@@ -13,16 +13,19 @@ export class PassportSetup {
 
     public setupPassport(app: express.Application, dataIn: Data): express.RequestHandler {
         var self = this;
-        const data = this.data = dataIn;
-        console.log("DataIn is ", dataIn);
-        console.log("Data is ", data);
-        console.log("This.data is ", this.data);
+        this.data = dataIn;
         passport.use(new passportLocal.Strategy(function(username, password, done) {
-            var result = data.checkLogon(username, password);
-            if(result){
-              self.data.findUserByName(username)
-                .then(user => done(null, user));
-            } else done(null, false);
+            self.data.checkLogon(username, password)
+              .then( result => {
+                 if(result){
+                   console.log("Log in - found user record");
+                   self.data.findUserByName(username)
+                     .then(user => done(null, user));
+                } else {
+                    console.log("User not found");
+                    done(null, false, { message: "Logon failed. Unknown user or password."});
+                }
+            });
         }));
 
         passport.serializeUser(function(user: any, done: any) {
@@ -42,6 +45,7 @@ export class PassportSetup {
         );
         app.use(passport.initialize());
         app.use(passport.session());
+        app.use(flash());        
 
         app.post('/login',
             (req: express.Request, res:express. Response, next: express.NextFunction)  => {
@@ -50,7 +54,7 @@ export class PassportSetup {
             },
             passport.authenticate('local', { successRedirect: '/',
                                         failureRedirect: '/login',
-                                        failureFlash: false }),
+                                        failureFlash: true }),
             (req: express.Request, res:express. Response, next: express.NextFunction)  => {
                 console.log("Login post finished");
                 next();
@@ -73,7 +77,8 @@ export class PassportSetup {
         
         app.get('/login',
         function(req: Request, res: any){
-            res.sendFile(__dirname+'/login/login.html');
+            console.log("Show login for: Response: ", res.locals);
+            res.render('login');
         });
 
         app.get('/register',

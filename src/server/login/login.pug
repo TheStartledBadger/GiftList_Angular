@@ -1,0 +1,17 @@
+doctype html5
+html
+  head
+    title Login
+
+  body
+    #{message}
+    form(action='/login' method='POST')
+      label Email
+        input(type='text' name='username')
+      br
+      label Password
+        input(type='password' name='password')
+      br
+      input(type='submit' value='Log In')
+
+    <a href='register'>Register</a>

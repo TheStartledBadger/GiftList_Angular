@@ -4,7 +4,7 @@ import * as express from 'express';
 const expressSession = require('express-session');
 const proxy = require('express-http-proxy');
 import { PassportSetup } from './setupPassport';
-
+ 
 // Get our API routes
 const apiInfo = require('./routes/api'); 
 const api = apiInfo().router;
@@ -12,6 +12,10 @@ const data = apiInfo().data;
 
 // Create our server process
 const app = express();
+
+// Use PUG for html generation
+app.set('views', __dirname+'/login')
+app.set('view engine', 'pug')
 
 // Parsers for POST data
 app.use(bodyParser.json());
